@@ -1,0 +1,169 @@
+[gd_scene load_steps=6 format=3 uid="uid://cf4264w1xb2ur"]
+
+[ext_resource type="PackedScene" uid="uid://bmklkbvmw7osb" path="res://World.tscn" id="1_6n4fk"]
+[ext_resource type="Script" path="res://Game.gd" id="1_7jynb"]
+[ext_resource type="Theme" uid="uid://doou8uorupajc" path="res://Menu Theme.tres" id="2_r4cof"]
+[ext_resource type="Texture2D" uid="uid://cl0h8nl4qgg0b" path="res://Caved In Logo.png" id="3_0sae5"]
+[ext_resource type="AudioStream" uid="uid://7ukunbvblglh" path="res://Music.mp3" id="4_iwvrh"]
+
+[node name="Game" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_7jynb")
+
+[node name="MenuCanvas" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="BlackRect" type="ColorRect" parent="MenuCanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="MenuContainer" type="VBoxContainer" parent="MenuCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.0
+offset_top = -44.0
+offset_right = 59.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_r4cof")
+
+[node name="TextureRect" type="TextureRect" parent="MenuCanvas/MenuContainer"]
+layout_mode = 2
+texture = ExtResource("3_0sae5")
+
+[node name="StartButton" type="Button" parent="MenuCanvas/MenuContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../SocialsButton")
+focus_neighbor_top = NodePath("../SocialsButton")
+focus_neighbor_right = NodePath("../HowToButton")
+focus_neighbor_bottom = NodePath("../HowToButton")
+focus_next = NodePath("../HowToButton")
+focus_previous = NodePath("../SocialsButton")
+theme = ExtResource("2_r4cof")
+text = "Start"
+
+[node name="HowToButton" type="Button" parent="MenuCanvas/MenuContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../StartButton")
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_right = NodePath("../SocialsButton")
+focus_neighbor_bottom = NodePath("../SocialsButton")
+focus_next = NodePath("../SocialsButton")
+focus_previous = NodePath("../StartButton")
+theme = ExtResource("2_r4cof")
+text = "How To Play"
+
+[node name="HSeparator" type="HSeparator" parent="MenuCanvas/MenuContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+
+[node name="SocialsButton" type="Button" parent="MenuCanvas/MenuContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath("../HowToButton")
+focus_neighbor_top = NodePath("../HowToButton")
+focus_neighbor_right = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("../StartButton")
+focus_next = NodePath("../StartButton")
+focus_previous = NodePath("../HowToButton")
+theme = ExtResource("2_r4cof")
+text = "Links"
+
+[node name="EndScreenContainer" type="VBoxContainer" parent="MenuCanvas"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = -30.0
+offset_right = 42.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MenuCanvas/EndScreenContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+text = "Congratulations!
+
+You lasted:
+xx:xx"
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="MenuCanvas/EndScreenContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+text = "Retry"
+
+[node name="BackButton" type="Button" parent="MenuCanvas/EndScreenContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+text = "Back to Menu"
+
+[node name="HowToContainer" type="VBoxContainer" parent="MenuCanvas"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = -30.0
+offset_right = 42.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MenuCanvas/HowToContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+text = "You've explored far... but now you must escape!
+The cave is about to collapse,
+and there isn't much time or space left!
+
+Use WASD or ARROW KEYS to move,
+and SPACE to jump
+Ladders can be grabbed by pressing up
+
+Quickly platform through as many screens as possible
+before the timer runs out!"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="MenuCanvas/HowToContainer"]
+layout_mode = 2
+theme = ExtResource("2_r4cof")
+text = "Back to Menu"
+
+[node name="World" parent="." instance=ExtResource("1_6n4fk")]
+process_mode = 1
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_iwvrh")
+
+[connection signal="pressed" from="MenuCanvas/MenuContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MenuContainer/HowToButton" to="." method="_on_how_to_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MenuContainer/SocialsButton" to="." method="_on_socials_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/EndScreenContainer/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/EndScreenContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/HowToContainer/BackButton" to="." method="_on_how_to_back_button_pressed"]

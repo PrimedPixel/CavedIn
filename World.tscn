@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmklkbvmw7osb"]
+
+[ext_resource type="Script" path="res://World.gd" id="1_tnll8"]
+[ext_resource type="PackedScene" uid="uid://dcgbnbkh77lxd" path="res://Player.tscn" id="2_t0vwa"]
+[ext_resource type="Theme" uid="uid://doou8uorupajc" path="res://Menu Theme.tres" id="4_f8hby"]
+[ext_resource type="PackedScene" uid="uid://bx56wph02jc4s" path="res://Levels/Enter Left/ExitRight1.tscn" id="4_mt7xg"]
+[ext_resource type="Script" path="res://TimeLabel.gd" id="4_nobrf"]
+[ext_resource type="Texture2D" uid="uid://bnvd82j0vc7ea" path="res://Cave In Rocks.png" id="6_aqlr4"]
+[ext_resource type="AudioStream" uid="uid://dixswq1nd1y52" path="res://Sounds/Grumble.wav" id="6_gyiiw"]
+[ext_resource type="Script" path="res://CaveInRocks.gd" id="7_kcx2g"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_tnll8")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="ParticleGen" type="CPUParticles2D" parent="."]
+z_index = 5
+position = Vector2(160, 0)
+amount = 4
+explosiveness = 0.25
+emission_shape = 3
+emission_rect_extents = Vector2(160, 1)
+direction = Vector2(0, 1)
+initial_velocity_max = 50.0
+angle_max = 360.0
+scale_amount_max = 3.0
+
+[node name="Player" parent="." instance=ExtResource("2_t0vwa")]
+z_index = 10
+position = Vector2(10, 85)
+platform_wall_layers = 1
+
+[node name="Level" parent="." instance=ExtResource("4_mt7xg")]
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="GUI"]
+offset_bottom = 7.0
+mouse_filter = 2
+
+[node name="TimeLabel" type="Label" parent="GUI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 48.0
+grow_vertical = 0
+theme = ExtResource("4_f8hby")
+vertical_alignment = 2
+script = ExtResource("4_nobrf")
+
+[node name="ScreenCountLabel" type="Label" parent="GUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -26.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_f8hby")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="CaveInRocks" type="Sprite2D" parent="GUI"]
+visible = false
+z_index = -5
+position = Vector2(-15, -15)
+texture = ExtResource("6_aqlr4")
+centered = false
+offset = Vector2(-350, 0)
+script = ExtResource("7_kcx2g")
+
+[node name="CaveInTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="GrumbleAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_gyiiw")
+
+[connection signal="timeout" from="CaveInTimer" to="." method="_on_cave_in_timer_timeout"]
